@@ -29,9 +29,7 @@ public class Rating {
 		return stars;
 	}
 	
-	public 
-	
 	public String toString() {
-		return "User: " + user.getID + "\nFilm: " + movie.getID + "\nStars: " + stars + "\nID: " + id;
+		return "User: " + user.getID() + "\nFilm: " + movie.getID() + "\nStars: " + stars + "\nID: " + id;
 	}
 }
