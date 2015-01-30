@@ -7,7 +7,7 @@ public class Main {
 		String movieData = reader.readFile("u.item");
 		String ratingsData = reader.readFile("u.data");
 		
-		System.out.println(ratingsData);
+		System.out.println(movieData);
 	}
 	
 }

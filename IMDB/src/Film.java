@@ -7,7 +7,7 @@ public class Film {
 	private int id;
 	private ArrayList<Rating> ratings;
 	
-	public Film(String title, String[] genre, int id) {
+	public Film(int id, String title, String date, String url, String[] genre) {
 		this.genre = genre;
 		this.title = title;
 		this.id = id;
