@@ -5,6 +5,8 @@ public class MovieLens100kTranslator {
 		
 	}
 	
+	
+	
 	public User lineToUser(String s) {
 		String[] data = s.split("\\|");
 		User user;
@@ -16,8 +18,12 @@ public class MovieLens100kTranslator {
 		return user;
 	}
 	
-//	public Film lineToFilm(String s) {
-//		
-//	}
+	public Film lineToFilm(String s) {
+		String[] data = s.split("\t");
+		Film film;
+		try {
+			film = new Film()
+		}
+	}
 	
 }
