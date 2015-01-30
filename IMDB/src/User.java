@@ -13,9 +13,7 @@ public class User {
 		ratings = new ArrayList<Rating>();
 	}
 	
-	public void rate(Film movie, int stars) {
-		ratings.add(new Rating(stars, this, movie));
-	}
+	
 	
 	public String toString() {
 		String info = "";
