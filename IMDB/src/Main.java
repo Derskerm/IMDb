@@ -9,13 +9,8 @@ public class Main {
 		MovieLens100kTranslator translator = new MovieLens100kTranslator();
 		String[] userDataArray = userData.split("\n");
 		User[] userArray = new User[userDataArray.length];
-		int dif = 0;
-		for (int i = 0; i < userArray.length - dif; i++) {
-			userArray[i] = translator.lineToUser(userDataArray[i + dif]);
-			if (userArray[i] == null) {
-				dif++;
-				i--;
-			}
+		for (int i = 0; i < userArray.length; i++) {
+			userArray[i] = translator.lineToUser(userDataArray[i]);
 		}
 		System.out.println(userArray[0]);
 	}
