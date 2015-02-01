@@ -6,7 +6,7 @@ public class Library {
 	private static ArrayList<Film> films;
 	private static ArrayList<User> users;
 	
-	public static Film addFilm(Film f) {
+	public static void addFilm(Film f) {
 		boolean repeat;
 		int ID = f.getID();
 		for (Film film : films) {
@@ -18,6 +18,6 @@ public class Library {
 	}
 	
 	private boolean isRepeat() {
-		
+		return false;
 	}
 }
