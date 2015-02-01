@@ -12,7 +12,7 @@ public class MovieLens100kTranslator {
 		String[] splitData = data.split("\n");
 		int count = 0;
 		for (String s : splitData) {
-			genres[count] = s.substring(0, s.indexOf("\\|"));
+			genres[count] = s.substring(0, s.indexOf("|"));
 			count++;
 		}
 	}
@@ -29,18 +29,22 @@ public class MovieLens100kTranslator {
 	}
 	
 	public Film lineToFilm(String s) {
-		String[] data = s.split("\t");
+		String[] data = s.split("\\|");
 		Film film = null;
-		ArrayList<String> filmGenres = null;
+		ArrayList<String> filmGenres = new ArrayList<String>();
 		for (int i = 5; i < data.length; i++) {
-			if (data[i].equals('1')) {
+			if (data[i].equals("1")) {
 				filmGenres.add(genres[i - 5]);
 			}
 		}
 		try {
-			film = new Film(Integer.parseInt(data[0]), data[1], data[2], data[4], (String[])filmGenres.toArray());
+			String[] myGenres = new String[filmGenres.size()];
+			myGenres = filmGenres.toArray(myGenres);
+			film = new Film(Integer.parseInt(data[0]), data[1], data[2], data[4], myGenres);
 		} catch (java.lang.NumberFormatException e) {
-			film = new Film(-1, data[1], data[2], data[4], (String[])filmGenres.toArray());
+			String[] myGenres = new String[filmGenres.size()];
+			filmGenres.toArray(myGenres);
+			film = new Film(-1, data[1], data[2], data[4], myGenres);
 		}
 		return film;
 	}

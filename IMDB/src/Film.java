@@ -2,15 +2,20 @@ import java.util.ArrayList;
 
 
 public class Film {
-	private String[] genre;
-	private String title;
 	private int id;
+	private String title;
+	private String date;
+	private String url;
+	private String[] genre;
+	
 	private ArrayList<Rating> ratings;
 	
 	public Film(int id, String title, String date, String url, String[] genre) {
-		this.genre = genre;
-		this.title = title;
 		this.id = id;
+		this.title = title;
+		this.date = date;
+		this.url = url;
+		this.genre = genre;
 	}
 	
 	public int getID() {
@@ -18,6 +23,13 @@ public class Film {
 	}
 	
 	public String toString() {
-		return "Genre: " + genre + "\nTitle: " + title + "\nId: " + id;
+		String result = "";
+		result += "Id: " + id;
+		result += "\nTitle: " + title;
+		result+="\nGenre: ";
+		for (String s : genre) {
+			result+='\t'+s+'\n';
+		}
+		return result;
 	}
 }
