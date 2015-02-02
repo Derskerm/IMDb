@@ -125,6 +125,7 @@ public class IMDBTester {
 		double guessStars, actualStars, totalDifference = 0;
 		int numberTested = 0, numberPresent = 0, userToTest, movieToTest;
 		
+		int count = 0;
 		for (String line : testDataLines) {
 			String[] lineVals = line.split("\t");
 			userToTest = Integer.parseInt(lineVals[0]);
@@ -139,6 +140,11 @@ public class IMDBTester {
 			totalDifference += Math.abs(guessStars-actualStars);
 			numberTested++;
 			System.out.println("Tested " + (numberTested+numberPresent) + "/" + testDataLines.length);
+			boolean yay = count>529;
+			if (yay) {
+				count=count;
+			}
+			count++;
 		}
 		
 		System.out.println("\n\n******Results******");

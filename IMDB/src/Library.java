@@ -47,4 +47,13 @@ public class Library {
 		getUser(r.getUserID()).addRating(r);
 		getFilm(r.getFilmID()).addRating(r);
 	}
+	
+	public static Rating getRating(int userID, int filmID) {
+		for (Rating r : ratings) {
+			if (r.getUserID() == userID && r.getFilmID() == filmID) {
+				return r;
+			}
+		}
+		return null;
+	}
 }

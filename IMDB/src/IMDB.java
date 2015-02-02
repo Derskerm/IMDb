@@ -6,9 +6,6 @@ public class IMDB {
 	private static final String usersFile = "u.user";
 	private static final String moviesFile = "u.item";
 	private static final String genresFile = "u.genre";
-	private User[] userArray;
-	private Film[] filmArray;
-	private String[] ratingArray;
 	// Add fields to represent your database.
 
 
@@ -24,15 +21,18 @@ public class IMDB {
 		String filmData = reader.readFile(moviesFile);
 		String ratingsData = reader.readFile(ratingsFile);
 		MovieLens100kTranslator translator = new MovieLens100kTranslator();
+		Library.addGenres(translator.genres);
 		String[] userDataArray = userData.split("\n");
-		userArray = new User[userDataArray.length];
-		for (int i = 0; i < userArray.length; i++) {
-			userArray[i] = translator.lineToUser(userDataArray[i]);
+		for (int i = 0; i < userDataArray.length; i++) {
+			Library.addUser(translator.lineToUser(userDataArray[i]));
 		}
 		String[] filmDataArray = filmData.split("\n");
-		filmArray = new Film[filmDataArray.length];
-		for (int i = 0; i < filmArray.length; i++) {
-			filmArray[i] = translator.lineToFilm(filmDataArray[i]);
+		for (int i = 0; i < filmDataArray.length; i++) {
+			Library.addFilm(translator.lineToFilm(filmDataArray[i]));
+		}
+		String[] ratingsDataArray = ratingsData.split("\n");
+		for (int i = 0; i < ratingsDataArray.length; i++) {
+			Library.addRating(translator.lineToRating(ratingsDataArray[i]));
 		}
 	}
 	
@@ -43,7 +43,7 @@ public class IMDB {
 	 * @return An array of objects representing individual movies.
 	 */
 	public Object[] getMovieData() {
-		return filmArray;
+		return new Object[0];
 	}
 	
 
@@ -53,7 +53,7 @@ public class IMDB {
 	 * @return An array of objects representing individual users.
 	 */
 	public Object[] getUserData() {
-		return userArray;
+		return new Object[0];
 	}
 
 	
@@ -65,7 +65,11 @@ public class IMDB {
 	 * @return The rating that userNumber gave movieNumber, or -1 if the user does not exist in the database, the movie does not exist, or the movie has not been rated by this user.
 	 */
 	public double getRating(long userID, long movieID) {
-		return 0;
+		try {
+			return Library.getRating((int)userID,(int)movieID).getStars();
+		} catch (java.lang.NullPointerException e) {
+			return -1;
+		}
 	}
 	
 	/**
@@ -77,8 +81,35 @@ public class IMDB {
 	 * @pre A user with id userID and a movie with id movieID exist in the database.
 	 */
 	public double guessRating(long userID, long movieID) {
-
-		return 0;
+		try {
+			return Library.getRating((int)userID,(int)movieID).getStars();
+		} catch (java.lang.NullPointerException e) {
+			Film f = Library.getFilm((int)movieID);
+			User u = Library.getUser((int)userID);
+			String genre = u.getFavoriteGenreByTotal();
+			return f.getAverageRating(genre);
+//			String[] genres = f.getGenre();
+//			double[] differences = new double[genres.length];
+//			for (int i = 0; i < differences.length; i++) {
+//				differences[i] = (u.getAverageRating(genres[i]) - 3)*u.getRatingsCount(genres[i]);
+//			}
+//			double total = 0;
+//			for (double d : differences) {
+//				total += d;
+//			}
+//			total/=u.getRatingsCount();
+//			double avg = f.getAverageRating();
+//			if (avg == 0.0) {
+//				avg = 3;
+//			}
+//			if (avg + total < 1) {
+//				return 1;
+//			} else if (avg + total > 5) {
+//				return 5;
+//			} else {
+//				return avg + total;
+//			}
+		}
 	}
 	
 }

@@ -71,29 +71,38 @@ public class User {
 		return ratingsArray;
 	}
 	
-	public String[] getFavoriteGenreByCount() {
-		int[] genreCount = new int[19];
+	public int getRatingsCount() {
+		return ratings.size();
+	}
+	
+	public int getRatingsCount(String genre) {
+		int genreCount = 0;
 		String[] myGenres;
 		String[] GENRES = Library.getGenres();
 		for (Rating r : ratings) {
 			myGenres = Library.getFilm(r.getFilmID()).getGenre();
 			for (String s : myGenres) {
-				for (int i = 0; i < GENRES.length; i++) {
-					if (s.equals(GENRES[i])) {
-						genreCount[i]++;
-					}
+				if (s.equals(genre)) {
+						genreCount++;
 				}
 			}
 		}
-		ArrayList<String> results = new ArrayList<String>();
-		int favGenreCount = 0;
-		for (int i : genreCount) {
-			if (i > favGenreCount) {
-				favGenreCount = i;
+		return genreCount;
+	}
+	
+	public String[] getFavoriteGenreByCount() {
+		double[] genreRatings = new double[19];
+		String[] GENRES = Library.getGenres();
+		double favGenreCount = 0;
+		for (int i = 0; i < genreRatings.length; i++) {
+			genreRatings[i] = getRatingsCount(GENRES[i]);
+			if (favGenreCount < genreRatings[i]) {
+				favGenreCount = genreRatings[i];
 			}
 		}
-		for (int i = 0; i < genreCount.length; i++) {
-			if (genreCount[i] == favGenreCount) {
+		ArrayList<String> results = new ArrayList<String>();
+		for (int i = 0; i < genreRatings.length; i++) {
+			if (genreRatings[i] == favGenreCount) {
 				results.add(GENRES[i]);
 			}
 		}
@@ -123,7 +132,7 @@ public class User {
 		return answers;
 	}
 	
-	public String[] getFavoriteGenreByTotal() {
+	public String getFavoriteGenreByTotal() {
 		double[] genreRatings = new double[19];
 		String[] myGenres;
 		String[] GENRES = Library.getGenres();
@@ -137,21 +146,26 @@ public class User {
 				}
 			}
 		}
-		ArrayList<String> results = new ArrayList<String>();
+		String favGenre = "";
 		double favGenreCount = 0;
-		for (double i : genreRatings) {
+		for (int i = 0; i < genreRatings.length; i++) {
 			if (i > favGenreCount) {
 				favGenreCount = i;
+				favGenre = GENRES[i];
 			}
 		}
-		for (int i = 0; i < genreRatings.length; i++) {
-			if (genreRatings[i] == favGenreCount) {
-				results.add(GENRES[i]);
-			}
-		}
-		String[] answers = new String[results.size()];
-		answers = results.toArray(answers);
-		return answers;
+		return favGenre;
+//		int count = 0;
+//		for (int i = 0; i < genreRatings.length; i++) {
+//			if (genreRatings[i] == favGenreCount) {
+//				count++;
+//			}
+//		}
+//		if (count == 1) {
+//			return favGenre;
+//		} else {
+//			
+//		}
 	}
 	
 	public String toString() {

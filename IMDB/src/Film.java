@@ -35,7 +35,26 @@ public class Film {
 		for (Rating r : ratings) {
 			total += r.getStars();
 		}
+		if (ratings.size() == 0) {
+			return 3;
+		}
 		return total/ratings.size();
+	}
+	
+	public double getAverageRating(String genre) {
+		double total = 0;
+		int count = 0;
+		for (Rating r : ratings) {
+			if (Library.getUser(r.getUserID()).getFavoriteGenreByCount()[0].equals(genre)) {
+				total+=r.getStars();
+				count++;
+			}
+		}
+		if (count != 0) {
+			return total / count;
+		} else {
+			return getAverageRating();
+		}
 	}
 	
 	public String toString() {
