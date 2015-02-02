@@ -45,7 +45,7 @@ public class Film {
 		double total = 0;
 		int count = 0;
 		for (Rating r : ratings) {
-			if (Library.getUser(r.getUserID()).getFavoriteGenreByCount()[0].equals(genre)) {
+			if (Library.getUser(r.getUserID()).getFavoriteGenreByTotal().equals(genre)) {
 				total+=r.getStars();
 				count++;
 			}

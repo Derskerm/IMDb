@@ -33,10 +33,8 @@ public class Main {
 			Library.addRating(f);
 		}
 		for (User u : userArray) {
-			String[] myFavGenres = u.getFavoriteGenreByTotal();
-			for (String s : myFavGenres) {
-				System.out.println(s + ": " + u.getAverageRating(s));
-			}
+			String myFavGenre = u.getFavoriteGenreByTotal();
+			System.out.println(myFavGenre + ": " + u.getAverageRating(myFavGenre));
 			System.out.println("");
 		}
 	}
