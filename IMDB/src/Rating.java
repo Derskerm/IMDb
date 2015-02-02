@@ -2,27 +2,23 @@
 public class Rating {
 
 	private int stars;
-	private User user;
-	private Film movie;
-	private int id;
+	private int userID;
+	private int filmID;
+	private int timestamp;
 	
-	public Rating(User user, Film movie, int stars, int id) {
+	public Rating(int userID, int filmID, int stars, int timestamp) {
 		this.stars = stars;
-		this.user = user;
-		this.movie = movie;
-		this.id = id;
+		this.userID = userID;
+		this.filmID = filmID;
+		this.timestamp = timestamp;
 	}
 	
-	public int getID() {
-		return id;
+	public int getUserID() {
+		return userID;
 	}
 	
-	public User getUser() {
-		return user;
-	}
-	
-	public Film getFilm() {
-		return movie;
+	public int getFilmID() {
+		return filmID;
 	}
 	
 	public int getStars() {
@@ -30,6 +26,6 @@ public class Rating {
 	}
 	
 	public String toString() {
-		return "User: " + user.getID() + "\nFilm: " + movie.getID() + "\nStars: " + stars + "\nID: " + id;
+		return "User: " + userID + "\nFilm: " + filmID + "\nStars: " + stars + "\nTimestamp: " + timestamp;
 	}
 }

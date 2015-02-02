@@ -5,6 +5,7 @@ public class IMDB {
 
 	private static final String usersFile = "u.user";
 	private static final String moviesFile = "u.item";
+	private static final String genresFile = "u.genre";
 	private User[] userArray;
 	private Film[] filmArray;
 	private String[] ratingArray;
@@ -21,7 +22,7 @@ public class IMDB {
 		FileIO reader = new FileIO();
 		String userData = reader.readFile(usersFile);
 		String filmData = reader.readFile(moviesFile);
-		String ratingsData = reader.readFile("u.data");
+		String ratingsData = reader.readFile(ratingsFile);
 		MovieLens100kTranslator translator = new MovieLens100kTranslator();
 		String[] userDataArray = userData.split("\n");
 		userArray = new User[userDataArray.length];
@@ -64,8 +65,7 @@ public class IMDB {
 	 * @return The rating that userNumber gave movieNumber, or -1 if the user does not exist in the database, the movie does not exist, or the movie has not been rated by this user.
 	 */
 	public double getRating(long userID, long movieID) {
-
-		return ;
+		return 0;
 	}
 	
 	/**

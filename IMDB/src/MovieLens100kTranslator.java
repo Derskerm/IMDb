@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class MovieLens100kTranslator {
 
 	
-	private String[] genres = new String[19];;
+	public final String[] genres = new String[19];
 	
 	public MovieLens100kTranslator() {
 		FileIO fileio = new FileIO();
@@ -21,7 +21,7 @@ public class MovieLens100kTranslator {
 		String[] data = s.split("\\|");
 		User user;
 		try {
-			user = new User(Integer.parseInt(data[1]),data[2],data[3],Integer.parseInt(data[4]));
+			user = new User(Integer.parseInt(data[0]),Integer.parseInt(data[1]),data[2],data[3],data[4]);
 		} catch (java.lang.NumberFormatException e) {
 			user = null;
 		}
@@ -49,4 +49,14 @@ public class MovieLens100kTranslator {
 		return film;
 	}
 	
+	public Rating lineToRating(String s) {
+		String[] data = s.split("\t");
+		Rating rating;
+		try {
+			rating = new Rating(Integer.parseInt(data[0]),Integer.parseInt(data[1]),Integer.parseInt(data[2]),Integer.parseInt(data[3]));
+		} catch (java.lang.NumberFormatException e) {
+			rating = null;
+		}
+		return rating;
+	}
 }
