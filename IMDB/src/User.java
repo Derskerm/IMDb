@@ -9,7 +9,7 @@ public class User {
 	String zipcode;
 	private double[] averageRatings;
 	private double averageRating;
-	private double favoriteGenre;
+	private int favoriteGenre;
 	private Rating[] ratingsArray;
 	private Rating[][] ratingsArrayByValue;
 	
@@ -23,17 +23,18 @@ public class User {
 	}
 	
 	public void calculate() {
-		averageRatings = new double[Library.getGenres().length];
-		for (int i = 0; i < averageRatings.length; i++) {
-			averageRatings[i] = calcAverageRating(i);
-		}
-		averageRating = calcAverageRating();
 		ratingsArray = new Rating[ratings.size()];
 		ratingsArray = ratings.toArray(ratingsArray);
 		ratingsArrayByValue = new Rating[5][];
 		for (int i = 0; i < ratingsArrayByValue.length; i++) {
 			ratingsArrayByValue[i] = this.calcRatings(i+1);
 		}
+		averageRatings = new double[Library.getGenres().length];
+		for (int i = 0; i < averageRatings.length; i++) {
+			averageRatings[i] = calcAverageRating(i);
+		}
+		averageRating = calcAverageRating();
+		favoriteGenre = calcFavoriteGenreByTotal();
 	}
 	
 	public int getID() {
@@ -143,7 +144,7 @@ public class User {
 		return favGenre;
 	}
 	
-	public int getFavoriteGenreByTotal() {
+	private int calcFavoriteGenreByTotal() {
 		double[] genreRatings = new double[19];
 		int[] myGenres;
 		for (Rating r : ratingsArray) {
@@ -161,6 +162,10 @@ public class User {
 			}
 		}
 		return favGenre;
+	}
+	
+	public int getFavoriteGenreByTotal() {
+		return favoriteGenre;
 	}
 	
 	public String toString() {

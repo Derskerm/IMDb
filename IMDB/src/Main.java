@@ -32,11 +32,11 @@ public class Main {
 		for (Rating f : ratingsArray) {
 			Library.addRating(f);
 		}
-		for (User u : userArray) {
-			String myFavGenre = u.getFavoriteGenreByTotal();
-			System.out.println(myFavGenre + ": " + u.getAverageRating(myFavGenre));
-			System.out.println("");
-		}
+//		for (User u : userArray) {
+//			String myFavGenre = u.getFavoriteGenreByTotal();
+//			System.out.println(myFavGenre + ": " + u.getAverageRating(myFavGenre));
+//			System.out.println("");
+//		}
 	}
 	
 }

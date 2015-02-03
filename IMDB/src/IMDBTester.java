@@ -45,6 +45,7 @@ public class IMDBTester {
 	
 	public static void main(String[] args) {
 		
+		long timeStart = System.nanoTime();
 		System.out.println("\n***Initializing IMDB***");
 		
 		IMDB tester = new IMDB(baseFile);
@@ -119,7 +120,6 @@ public class IMDBTester {
 		
 		System.out.println("\n***Generating Recommendations***");
 		
-		long timeStart = System.nanoTime();
 		String testData = readFile(testFile);
 		String[] testDataLines = testData.split(lineSeparator);
 		
@@ -154,7 +154,7 @@ public class IMDBTester {
 		System.out.println("Test combinations not present (rating guessed): " + numberTested);
 		System.out.println("Total difference between guessed and actual ratings: " + totalDifference);
 		System.out.println("Average difference between guessed and actual ratings: " + totalDifference/numberTested);
-		System.out.println("Time: " + ((timeStart - timeEnd)*0.000000001) + " seconds");
+		System.out.println("Time: " + ((timeEnd - timeStart)*0.000000001) + " seconds");
 		
 		
 	}

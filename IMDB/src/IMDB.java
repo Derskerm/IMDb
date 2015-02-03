@@ -6,7 +6,8 @@ public class IMDB {
 	private static final String usersFile = "u.user";
 	private static final String moviesFile = "u.item";
 	private static final String genresFile = "u.genre";
-	// Add fields to represent your database.
+	private static User[] users;
+	private static Film[] films;
 
 
 	
@@ -33,6 +34,15 @@ public class IMDB {
 		String[] ratingsDataArray = ratingsData.split("\n");
 		for (int i = 0; i < ratingsDataArray.length; i++) {
 			Library.addRating(translator.lineToRating(ratingsDataArray[i]));
+		}
+		Library.calculate();
+		users = Library.getUsers();
+		films = Library.getFilms();
+		for (User u : users) {
+			u.calculate();
+		}
+		for (Film f : films) {
+			f.calculate();
 		}
 	}
 	
@@ -86,9 +96,9 @@ public class IMDB {
 		} catch (java.lang.NullPointerException e) {
 			Film f = Library.getFilm((int)movieID);
 			User u = Library.getUser((int)userID);
-			int genre = u.getFavoriteGenreByTotal();
-			return f.getAverageRating(genre) + u.getAverageRating(f.getGenre()[0]) - 3;
-//			String[] genres = f.getGenre();
+//			int genre = u.getFavoriteGenreByTotal();
+//			return f.getAverageRating(genre) + u.getAverageRating(f.getGenre()[0]) - f.getAverageRating();
+//			int[] genres = f.getGenre();
 //			double[] differences = new double[genres.length];
 //			for (int i = 0; i < differences.length; i++) {
 //				differences[i] = (u.getAverageRating(genres[i]) - 3)*u.getRatingsCount(genres[i]);
@@ -109,6 +119,7 @@ public class IMDB {
 //			} else {
 //				return avg + total;
 //			}
+			return f.getAverageRating(u.getFavoriteGenreByAvgRating());
 		}
 	}
 	
