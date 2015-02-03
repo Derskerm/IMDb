@@ -13,11 +13,8 @@ public class Library {
 	}
 	
 	public static User getUser(int ID) {
-		for (User u : users) {
-			if (u.getID() == ID) {
-				return u;
-			}
-		}
+		if (ID >= 0 || ID < users.size())
+			return users.get(ID);
 		return null;
 	}
 	

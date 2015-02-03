@@ -6,10 +6,11 @@ public class Film {
 	private String title;
 	private String date;
 	private String url;
-	private String[] genre;
+	private int[] genre;
 	private ArrayList<Rating> ratings;
+	private static FileIO fileIO = new FileIO();
 	
-	public Film(int id, String title, String date, String url, String[] genre) {
+	public Film(int id, String title, String date, String url, int[] genre) {
 		this.id = id;
 		this.title = title;
 		this.date = date;
@@ -26,7 +27,7 @@ public class Film {
 		ratings.add(r);
 	}
 	
-	public String[] getGenre() {
+	public int[] getGenre() {
 		return genre;
 	}
 	
@@ -65,14 +66,14 @@ public class Film {
 		result += "\nURL: " + url;
 		
 		if (genre.length == 1)
-			result+="\nGenre: " + genre[0];
+			result+="\nGenre: " + Library.getGenres()[genre[0]];
 		else {
 			result += "\nGenres: ";
 			for (int i = 0; i < genre.length; i++) {
 				if (i == genre.length - 1)
-					result += genre[i];
+					result += Library.getGenres()[genre[i]];
 				else
-					result+=genre[i]+", ";
+					result+=Library.getGenres()[genre[i]]+", ";
 			}
 		}
 		return result;

@@ -119,6 +119,7 @@ public class IMDBTester {
 		
 		System.out.println("\n***Generating Recommendations***");
 		
+		long timeStart = System.nanoTime();
 		String testData = readFile(testFile);
 		String[] testDataLines = testData.split(lineSeparator);
 		
@@ -147,11 +148,13 @@ public class IMDBTester {
 			count++;
 		}
 		
+		long timeEnd = System.nanoTime();
 		System.out.println("\n\n******Results******");
 		System.out.println("Test combinations already present in dataset: " + numberPresent);
 		System.out.println("Test combinations not present (rating guessed): " + numberTested);
 		System.out.println("Total difference between guessed and actual ratings: " + totalDifference);
 		System.out.println("Average difference between guessed and actual ratings: " + totalDifference/numberTested);
+		System.out.println("Time: " + ((timeStart - timeEnd)*0.000000001) + " seconds");
 		
 		
 	}

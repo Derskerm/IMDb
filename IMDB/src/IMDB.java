@@ -87,7 +87,7 @@ public class IMDB {
 			Film f = Library.getFilm((int)movieID);
 			User u = Library.getUser((int)userID);
 			String genre = u.getFavoriteGenreByTotal();
-			return f.getAverageRating(genre);
+			return f.getAverageRating(genre) + u.getAverageRating(f.getGenre()[0]) - 3;
 //			String[] genres = f.getGenre();
 //			double[] differences = new double[genres.length];
 //			for (int i = 0; i < differences.length; i++) {

@@ -31,15 +31,15 @@ public class MovieLens100kTranslator {
 	public Film lineToFilm(String s) {
 		String[] data = s.split("\\|");
 		Film film = null;
-		ArrayList<String> filmGenres = new ArrayList<String>();
+		ArrayList<Integer> filmGenres = new ArrayList<Integer>();
 		for (int i = 5; i < data.length; i++) {
 			if (data[i].equals("1")) {
-				filmGenres.add(genres[i - 5]);
+				filmGenres.add(i - 5);
 			}
 		}
 		try {
-			String[] myGenres = new String[filmGenres.size()];
-			myGenres = filmGenres.toArray(myGenres);
+			int[] 
+			for (Integer )
 			film = new Film(Integer.parseInt(data[0]), data[1], data[2], data[4], myGenres);
 		} catch (java.lang.NumberFormatException e) {
 			String[] myGenres = new String[filmGenres.size()];
