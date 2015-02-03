@@ -9,6 +9,8 @@ public class Film {
 	private int[] genre;
 	private ArrayList<Rating> ratings;
 	private static FileIO fileIO = new FileIO();
+	private double[] averageRatings;
+	private double averageRating;
 	
 	public Film(int id, String title, String date, String url, int[] genre) {
 		this.id = id;
@@ -17,6 +19,14 @@ public class Film {
 		this.url = url;
 		this.genre = genre;
 		ratings = new ArrayList<Rating>();
+	}
+	
+	public void calculate() {
+		averageRatings = new double[Library.getGenres().length];
+		for (int i = 0; i < averageRatings.length; i++) {
+			averageRatings[i] = calcAverageRating(i);
+		}
+		averageRating = calcAverageRating();
 	}
 	
 	public int getID() {
@@ -31,7 +41,7 @@ public class Film {
 		return genre;
 	}
 	
-	public double getAverageRating() {
+	private double calcAverageRating() {
 		double total = 0;
 		for (Rating r : ratings) {
 			total += r.getStars();
@@ -42,11 +52,15 @@ public class Film {
 		return total/ratings.size();
 	}
 	
-	public double getAverageRating(String genre) {
+	public double getAverageRating() {
+		return averageRating;
+	}
+	
+	private double calcAverageRating(int genre) {
 		double total = 0;
 		int count = 0;
 		for (Rating r : ratings) {
-			if (Library.getUser(r.getUserID()).getFavoriteGenreByTotal().equals(genre)) {
+			if (Library.getUser(r.getUserID()).getFavoriteGenreByTotal()==genre) {
 				total+=r.getStars();
 				count++;
 			}
@@ -54,8 +68,12 @@ public class Film {
 		if (count != 0) {
 			return total / count;
 		} else {
-			return getAverageRating();
+			return -1;
 		}
+	}
+	
+	public double getAverageRating(int genre) {
+		return averageRatings[genre];
 	}
 	
 	public String toString() {

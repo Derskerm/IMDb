@@ -37,15 +37,11 @@ public class MovieLens100kTranslator {
 				filmGenres.add(i - 5);
 			}
 		}
-		try {
-			int[] 
-			for (Integer )
-			film = new Film(Integer.parseInt(data[0]), data[1], data[2], data[4], myGenres);
-		} catch (java.lang.NumberFormatException e) {
-			String[] myGenres = new String[filmGenres.size()];
-			filmGenres.toArray(myGenres);
-			film = new Film(-1, data[1], data[2], data[4], myGenres);
+		int[] genreInts = new int[filmGenres.size()];
+		for (int i = 0; i < genreInts.length; i++) {
+			genreInts[i] = filmGenres.get(i);
 		}
+		film = new Film(Integer.parseInt(data[0]), data[1], data[2], data[4], genreInts);
 		return film;
 	}
 	

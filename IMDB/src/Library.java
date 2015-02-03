@@ -23,11 +23,8 @@ public class Library {
 	}
 	
 	public static Film getFilm(int ID) {
-		for (Film u : films) {
-			if (u.getID() == ID) {
-				return u;
-			}
-		}
+		if (ID >= 0 || ID < films.size())
+			return films.get(ID);
 		return null;
 	}
 	

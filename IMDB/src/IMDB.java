@@ -86,7 +86,7 @@ public class IMDB {
 		} catch (java.lang.NullPointerException e) {
 			Film f = Library.getFilm((int)movieID);
 			User u = Library.getUser((int)userID);
-			String genre = u.getFavoriteGenreByTotal();
+			int genre = u.getFavoriteGenreByTotal();
 			return f.getAverageRating(genre) + u.getAverageRating(f.getGenre()[0]) - 3;
 //			String[] genres = f.getGenre();
 //			double[] differences = new double[genres.length];

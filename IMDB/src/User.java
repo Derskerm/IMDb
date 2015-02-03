@@ -7,6 +7,11 @@ public class User {
 	private ArrayList<Rating> ratings;
 	private int id;
 	String zipcode;
+	private double[] averageRatings;
+	private double averageRating;
+	private double favoriteGenre;
+	private Rating[] ratingsArray;
+	private Rating[][] ratingsArrayByValue;
 	
 	public User(int id, int age, String gender, String profession, String zipcode) {
 		this.profession = profession;
@@ -17,6 +22,20 @@ public class User {
 		this.zipcode = zipcode;
 	}
 	
+	public void calculate() {
+		averageRatings = new double[Library.getGenres().length];
+		for (int i = 0; i < averageRatings.length; i++) {
+			averageRatings[i] = calcAverageRating(i);
+		}
+		averageRating = calcAverageRating();
+		ratingsArray = new Rating[ratings.size()];
+		ratingsArray = ratings.toArray(ratingsArray);
+		ratingsArrayByValue = new Rating[5][];
+		for (int i = 0; i < ratingsArrayByValue.length; i++) {
+			ratingsArrayByValue[i] = this.calcRatings(i+1);
+		}
+	}
+	
 	public int getID() {
 		return id;
 	}
@@ -25,23 +44,26 @@ public class User {
 		ratings.add(r);
 	}
 	
-	public double getAverageRating() {
+	private double calcAverageRating() {
 		double total = 0;
-		for (Rating r : ratings) {
+		for (Rating r : ratingsArray) {
 			total += r.getStars();
 		}
-		return total/ratings.size();
+		return total/ratingsArray.length;
 	}
 	
-	public double getAverageRating(String genre) {
+	public double getAverageRating() {
+		return averageRating;
+	}
+	
+	private double calcAverageRating(int genre) {
 		double total = 0;
 		int count = 0;
-		Film f;
-		String[] genres;
-		for (Rating r : ratings) {
+		int[] genres;
+		for (Rating r : ratingsArray) {
 			genres = Library.getFilm(r.getFilmID()).getGenre();
-			for (String s : genres) {
-				if (genre.equals(s)) {
+			for (int i : genres) {
+				if (genre == i) {
 					total += r.getStars();
 					count++;
 				}
@@ -53,15 +75,17 @@ public class User {
 		return total/count;
 	}
 	
+	public double getAverageRating(int genre) {
+		return averageRatings[genre];
+	}
+	
 	public Rating[] getRatings() {
-		Rating[] ratingsArray = new Rating[ratings.size()];
-		ratingsArray = ratings.toArray(ratingsArray);
 		return ratingsArray;
 	}
 	
-	public Rating[] getRatings(int stars) {
+	private Rating[] calcRatings(int stars) {
 		ArrayList<Rating> specificRatings = new ArrayList<Rating>();
-		for (Rating r : ratings) {
+		for (Rating r : ratingsArray) {
 			if (r.getStars() == stars) {
 				specificRatings.add(r);
 			}
@@ -71,101 +95,72 @@ public class User {
 		return ratingsArray;
 	}
 	
+	public Rating[] getRatings(int stars) {
+		return ratingsArrayByValue[stars];
+	}
+	
 	public int getRatingsCount() {
 		return ratings.size();
 	}
 	
-	public int getRatingsCount(String genre) {
+	public int getRatingsCount(int genre) {
 		int genreCount = 0;
-		String[] myGenres;
-		String[] GENRES = Library.getGenres();
-		for (Rating r : ratings) {
+		int[] myGenres;
+		for (Rating r : ratingsArray) {
 			myGenres = Library.getFilm(r.getFilmID()).getGenre();
-			for (String s : myGenres) {
-				if (s.equals(genre)) {
-						genreCount++;
+			for (int s : myGenres) {
+				if (s == genre) {
+					genreCount++;
 				}
 			}
 		}
 		return genreCount;
 	}
 	
-	public String[] getFavoriteGenreByCount() {
-		double[] genreRatings = new double[19];
-		String[] GENRES = Library.getGenres();
+	public int getFavoriteGenreByCount() {
+		double[] genreCounts = new double[19];
 		double favGenreCount = 0;
-		for (int i = 0; i < genreRatings.length; i++) {
-			genreRatings[i] = getRatingsCount(GENRES[i]);
-			if (favGenreCount < genreRatings[i]) {
-				favGenreCount = genreRatings[i];
-			}
-		}
-		ArrayList<String> results = new ArrayList<String>();
-		for (int i = 0; i < genreRatings.length; i++) {
-			if (genreRatings[i] == favGenreCount) {
-				results.add(GENRES[i]);
-			}
-		}
-		String[] answers = new String[results.size()];
-		answers = results.toArray(answers);
-		return answers;
-	}
-	
-	public String[] getFavoriteGenreByAvgRating() {
-		double[] genreRatings = new double[19];
-		String[] GENRES = Library.getGenres();
-		double favGenreCount = 0;
-		for (int i = 0; i < genreRatings.length; i++) {
-			genreRatings[i] = getAverageRating(GENRES[i]);
-			if (favGenreCount < genreRatings[i]) {
-				favGenreCount = genreRatings[i];
-			}
-		}
-		ArrayList<String> results = new ArrayList<String>();
-		for (int i = 0; i < genreRatings.length; i++) {
-			if (genreRatings[i] == favGenreCount) {
-				results.add(GENRES[i]);
-			}
-		}
-		String[] answers = new String[results.size()];
-		answers = results.toArray(answers);
-		return answers;
-	}
-	
-	public String getFavoriteGenreByTotal() {
-		double[] genreRatings = new double[19];
-		String[] myGenres;
-		String[] GENRES = Library.getGenres();
-		for (Rating r : ratings) {
-			myGenres = Library.getFilm(r.getFilmID()).getGenre();
-			for (String s : myGenres) {
-				for (int i = 0; i < GENRES.length; i++) {
-					if (s.equals(GENRES[i])) {
-						genreRatings[i]+=r.getStars();
-					}
-				}
-			}
-		}
-		String favGenre = "";
-		double favGenreCount = 0;
-		for (int i = 0; i < genreRatings.length; i++) {
-			if (i > favGenreCount) {
-				favGenreCount = i;
-				favGenre = GENRES[i];
+		int favGenre = -1;
+		for (int i = 0; i < genreCounts.length; i++) {
+			genreCounts[i] = getRatingsCount(i);
+			if (favGenreCount < genreCounts[i]) {
+				favGenreCount = genreCounts[i];
+				favGenre = i;
 			}
 		}
 		return favGenre;
-//		int count = 0;
-//		for (int i = 0; i < genreRatings.length; i++) {
-//			if (genreRatings[i] == favGenreCount) {
-//				count++;
-//			}
-//		}
-//		if (count == 1) {
-//			return favGenre;
-//		} else {
-//			
-//		}
+	}
+	
+	public int getFavoriteGenreByAvgRating() {
+		double favGenreCount = 0;
+		int favGenre = -1;
+		for (int i = 0; i < averageRatings.length; i++) {
+			if (averageRatings[i] > favGenreCount) {
+				favGenreCount = averageRatings[i];
+				favGenre = i;
+			}
+		}
+		return favGenre;
+	}
+	
+	public int getFavoriteGenreByTotal() {
+		double[] genreRatings = new double[19];
+		int[] myGenres;
+		for (Rating r : ratingsArray) {
+			myGenres = Library.getFilm(r.getFilmID()).getGenre();
+			for (int s : myGenres) {
+				genreRatings[s]+=r.getStars();
+			}
+		}
+		int favGenre = -1;
+		double favGenreCount = 0;
+		for (int i = 0; i < genreRatings.length; i++) {
+			if (genreRatings[i] > favGenreCount) {
+				favGenreCount = genreRatings[i];
+				favGenre = i;
+			}
+		}
+		return favGenre;
 	}
 	
 	public String toString() {
