@@ -11,6 +11,8 @@ public class Film {
 	private static FileIO fileIO = new FileIO();
 	private double[] averageRatings;
 	private double averageRating;
+	private Rating[] ratingsArray;
+	private Rating[][] ratingsArrayByValue;
 	
 	public Film(int id, String title, String date, String url, int[] genre) {
 		this.id = id;
@@ -22,11 +24,37 @@ public class Film {
 	}
 	
 	public void calculate() {
+		ratingsArray = new Rating[ratings.size()];
+		ratingsArray = ratings.toArray(ratingsArray);
+		ratingsArrayByValue = new Rating[5][];
+		for (int i = 0; i < ratingsArrayByValue.length; i++) {
+			ratingsArrayByValue[i] = this.calcRatings(i+1);
+		}
 		averageRatings = new double[Library.getGenres().length];
 		for (int i = 0; i < averageRatings.length; i++) {
 			averageRatings[i] = calcAverageRating(i);
 		}
 		averageRating = calcAverageRating();
+	}
+	
+	public Rating[] getRatings() {
+		return ratingsArray;
+	}
+	
+	private Rating[] calcRatings(int stars) {
+		ArrayList<Rating> specificRatings = new ArrayList<Rating>();
+		for (Rating r : ratingsArray) {
+			if (r.getStars() == stars) {
+				specificRatings.add(r);
+			}
+		}
+		Rating[] ratingsArray = new Rating[specificRatings.size()];
+		ratingsArray = specificRatings.toArray(ratingsArray);
+		return ratingsArray;
+	}
+	
+	public Rating[] getRatings(int stars) {
+		return ratingsArrayByValue[stars - 1];
 	}
 	
 	public int getID() {
@@ -43,13 +71,13 @@ public class Film {
 	
 	private double calcAverageRating() {
 		double total = 0;
-		for (Rating r : ratings) {
+		for (Rating r : ratingsArray) {
 			total += r.getStars();
 		}
-		if (ratings.size() == 0) {
+		if (ratingsArray.length == 0) {
 			return 3;
 		}
-		return total/ratings.size();
+		return total/ratingsArray.length;
 	}
 	
 	public double getAverageRating() {
@@ -59,7 +87,7 @@ public class Film {
 	private double calcAverageRating(int genre) {
 		double total = 0;
 		int count = 0;
-		for (Rating r : ratings) {
+		for (Rating r : ratingsArray) {
 			if (Library.getUser(r.getUserID()).getFavoriteGenreByTotal()==genre) {
 				total+=r.getStars();
 				count++;

@@ -119,7 +119,49 @@ public class IMDB {
 //			} else {
 //				return avg + total;
 //			}
-			return f.getAverageRating(u.getFavoriteGenreByAvgRating());
+			ArrayList<Rating> ratingsAmongSimilar = new ArrayList<Rating>();
+			Rating[] fiveStars = u.getRatings(5);
+			for (Rating r : fiveStars) {
+				Rating[] fiveStarUsers = Library.getFilm(r.getFilmID()).getRatings(5);
+				for (Rating a : fiveStarUsers) {
+					User u2 = Library.getUser(a.getUserID());
+					if (u2.getID() != u.getID()) {
+						Rating t = Library.getRating(u2.getID(), f.getID());
+						if (t != null) {
+							ratingsAmongSimilar.add(t);
+						}
+					}
+				}
+			}
+			int total1 = 0;
+			for (Rating i : ratingsAmongSimilar) {
+				total1 += i.getStars();
+			}
+			if (total1 != 0) {
+				return total1/ratingsAmongSimilar.size();
+			} else {
+				int[] genres = f.getGenre();
+				double[] differences = new double[genres.length];
+				for (int i = 0; i < differences.length; i++) {
+					differences[i] = (u.getAverageRating(genres[i]) - 3)*u.getRatingsCount(genres[i]);
+				}
+				double total = 0;
+				for (double d : differences) {
+					total += d;
+				}
+				total/=u.getRatingsCount();
+				double avg = f.getAverageRating();
+				if (avg == 0.0) {
+					avg = 3;
+				}
+				if (avg + total < 1) {
+					return 1;
+				} else if (avg + total > 5) {
+					return 5;
+				} else {
+					return avg + total;
+				}
+			}
 		}
 	}
 	

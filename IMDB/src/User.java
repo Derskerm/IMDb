@@ -97,7 +97,7 @@ public class User {
 	}
 	
 	public Rating[] getRatings(int stars) {
-		return ratingsArrayByValue[stars];
+		return ratingsArrayByValue[stars - 1];
 	}
 	
 	public int getRatingsCount() {

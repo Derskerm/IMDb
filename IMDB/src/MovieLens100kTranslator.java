@@ -49,7 +49,7 @@ public class MovieLens100kTranslator {
 		String[] data = s.split("\t");
 		Rating rating;
 		try {
-			rating = new Rating(Integer.parseInt(data[0]),Integer.parseInt(data[1]),Integer.parseInt(data[2]),Integer.parseInt(data[3]));
+			rating = new Rating(Integer.parseInt(data[0]),Integer.parseInt(data[1]),Integer.parseInt(data[2]),Integer.parseInt(data[3].trim()));
 		} catch (java.lang.NumberFormatException e) {
 			rating = null;
 		}
