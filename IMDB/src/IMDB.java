@@ -91,77 +91,59 @@ public class IMDB {
 	 * @pre A user with id userID and a movie with id movieID exist in the database.
 	 */
 	public double guessRating(long userID, long movieID) {
-		try {
-			return Library.getRating((int)userID,(int)movieID).getStars();
-		} catch (java.lang.NullPointerException e) {
+		Rating g = Library.getRating((int)userID,(int)movieID);
+		if (g != null) {
+			return g.getStars();
+		} else {
 			Film f = Library.getFilm((int)movieID);
 			User u = Library.getUser((int)userID);
 //			int genre = u.getFavoriteGenreByTotal();
 //			return f.getAverageRating(genre) + u.getAverageRating(f.getGenre()[0]) - f.getAverageRating();
-//			int[] genres = f.getGenre();
-//			double[] differences = new double[genres.length];
-//			for (int i = 0; i < differences.length; i++) {
-//				differences[i] = (u.getAverageRating(genres[i]) - 3)*u.getRatingsCount(genres[i]);
-//			}
-//			double total = 0;
-//			for (double d : differences) {
-//				total += d;
-//			}
-//			total/=u.getRatingsCount();
-//			double avg = f.getAverageRating();
-//			if (avg == 0.0) {
-//				avg = 3;
-//			}
-//			if (avg + total < 1) {
-//				return 1;
-//			} else if (avg + total > 5) {
-//				return 5;
-//			} else {
-//				return avg + total;
-//			}
-			ArrayList<Rating> ratingsAmongSimilar = new ArrayList<Rating>();
-			Rating[] fiveStars = u.getRatings(5);
-			for (Rating r : fiveStars) {
-				Rating[] fiveStarUsers = Library.getFilm(r.getFilmID()).getRatings(5);
-				for (Rating a : fiveStarUsers) {
-					User u2 = Library.getUser(a.getUserID());
-					if (u2.getID() != u.getID()) {
-						Rating t = Library.getRating(u2.getID(), f.getID());
-						if (t != null) {
-							ratingsAmongSimilar.add(t);
-						}
-					}
-				}
+			int[] genres = f.getGenre();
+			double[] differences = new double[genres.length];
+			for (int i = 0; i < differences.length; i++) {
+				differences[i] = (u.getAverageRating(genres[i]) - 3)*u.getRatingsCount(genres[i]);
 			}
-			int total1 = 0;
-			for (Rating i : ratingsAmongSimilar) {
-				total1 += i.getStars();
+			double total = 0;
+			for (double d : differences) {
+				total += d;
 			}
-			if (total1 != 0) {
-				return total1/ratingsAmongSimilar.size();
+			total/=u.getRatingsCount();
+			double avg = f.getAverageRating();
+			if (avg == 0.0) {
+				avg = 3;
+			}
+			if (avg + total < 1) {
+				return 1;
+			} else if (avg + total > 5) {
+				return 5;
 			} else {
-				int[] genres = f.getGenre();
-				double[] differences = new double[genres.length];
-				for (int i = 0; i < differences.length; i++) {
-					differences[i] = (u.getAverageRating(genres[i]) - 3)*u.getRatingsCount(genres[i]);
-				}
-				double total = 0;
-				for (double d : differences) {
-					total += d;
-				}
-				total/=u.getRatingsCount();
-				double avg = f.getAverageRating();
-				if (avg == 0.0) {
-					avg = 3;
-				}
-				if (avg + total < 1) {
-					return 1;
-				} else if (avg + total > 5) {
-					return 5;
-				} else {
-					return avg + total;
-				}
+				return avg + total;
 			}
+//			Rating[] ratings = f.getRatings();
+//			int total = 0;
+//			int count = 0;
+//			for (Rating r : ratings) {
+//				User other = Library.getUser(r.getUserID());
+//				total += (r.getStars() - 3)*u.getRatingsCount(other.getFavoriteGenreByTotal());
+//				count += u.getRatingsCount(other.getFavoriteGenreByTotal());
+//			}
+//			if (count != 0) {
+//				total/=count;
+//				double avg = f.getAverageRating();
+//				if (avg == 0.0) {
+//					avg = 3;
+//				}
+//				if (avg + total < 1) {
+//					return 1;
+//				} else if (avg + total > 5) {
+//					return 5;
+//				} else {
+//					return avg + total;
+//				}
+//			} else {
+//				return f.getAverageRating();
+//			}
 		}
 	}
 	
