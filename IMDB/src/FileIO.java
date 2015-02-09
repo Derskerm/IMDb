@@ -2,10 +2,13 @@ import java.io.*;
 import java.util.Scanner;
 
 public class FileIO {
+	
 	private String lineSeparator;
+	
 	public FileIO() {
 		lineSeparator = System.getProperty("line.separator");
 	}
+	
 	public String readFile(String filename) {
 		FileReader reader;
 		String fileData = null;
@@ -27,6 +30,25 @@ public class FileIO {
 				in.close();
 		}
 		return fileData;
+	}
+	
+	public void writeFile(String filename, String data) {
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(filename);
+			writer.write(data);
+		} catch (FileNotFoundException e) {
+//			Better reaction than printing a stack trace
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (writer != null)
+				try {
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
 	}
 	
 }
